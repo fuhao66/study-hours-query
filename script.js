@@ -27,7 +27,7 @@ function search() {
     html += `<p><strong>已完成学时：</strong> ${record["已完成学时"]}</p>`;
     html += "<h4>参与活动：</h4><ul>";
     for (let key in record) {
-        if (key !== "姓名" && key !== "学号" && key !== "所在学院" && key !== "已完成学时" && record[key] > 0) {
+        if (key !== "姓名" && key !== "学号" && key !== "所在学院" && key !== "已完成学时") {
             html += `<li class="activity">${key}：${record[key]} 学时</li>`;
         }
     }
