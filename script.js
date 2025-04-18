@@ -2,7 +2,7 @@
   let data = [];
 
   // 预加载 data.json
-  fetch('data.json')
+    fetch('data.json?v=' + Date.now())  // 加时间戳避免浏览器缓存
     .then(response => response.json())
     .then(json => {
       data = json;
