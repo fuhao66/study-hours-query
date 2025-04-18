@@ -26,7 +26,7 @@ function search() {
     html += `<p>所在学院：${record["所在学院"]}</p>`;
     html += `<p><strong>已完成学时：</strong> ${record["已完成学时"]}</p>`;
     html += "<h4>参与活动：</h4><ul>";
-        for (let key in record) {
+    for (let key in record) {
         // 过滤基本信息字段
         if (key !== "姓名" && key !== "学号" && key !== "所在学院" && key !== "已完成学时") {
             let activityHours = Number(record[key]);  // 强制转换为数字
