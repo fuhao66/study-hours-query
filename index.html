@@ -116,10 +116,18 @@
         <p><strong>学号：</strong>${record["学号"]}</p>
         <p><strong>所在学院：</strong>${record["所在学院"]}</p>
         <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
+        // <p><strong>参与活动：</strong></p>
+        // <ul>
+        // ${(record["参与活动"] || "无").split("；").map(act => `<li>${act}</li>`).join("")}
+        // </ul>
         <p><strong>参与活动：</strong></p>
         <ul>
-        ${(record["参与活动"] || "无").split("；").map(act => `<li>${act}</li>`).join("")}
-        </ul>
+         ${Object.keys(record)
+          .filter(key => !["姓名", "学号", "所在学院", "已完成学时"].includes(key)) // 只保留活动列
+          .filter(key => record[key] && record[key].toString().trim() !== "") // 有值的列
+          .map(key => `<li>${key}</li>`)
+          .join("")}
+          </ul>
         `;
         resultDiv.style.display = "block";
         notFoundDiv.style.display = "none";
