@@ -5,26 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>学时查询系统</title>
   <style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: "Helvetica Neue", sans-serif;
-    background-color: #f0f4f8;
-    overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-  }
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 1.2rem;
+    }
 
-.container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 1.5rem 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-    
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
     h1 {
       text-align: center;
       color: #1e3a8a;
@@ -32,18 +28,16 @@
     }
 
     input {
-      max-width: 300px;
-    width: 100%;
-    margin: 0 auto 1rem;
-    display: block;
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
 
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-  }
     button {
-      width: 80%;
+      width: 100%;
       padding: 0.8rem;
       background-color: #2563eb;
       color: white;
@@ -51,8 +45,6 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      display: block;
-      margin: 0 auto;
     }
 
     button:hover {
@@ -110,24 +102,12 @@
       );
 
       if (record) {
-          let activities = "";
-          for (let key in record) {
-            if (
-                  !["姓名", "学号", "所在学院", "已完成学时"].includes(key)
-                ) {
-                  const hours = Number(String(record[key]).trim());
-                if (!isNaN(hours) && hours > 0) {
-                  activities += `${key}：${hours} 学时\n`;
-      }
-    }
-  }
         resultDiv.innerHTML = `
           <p><strong>姓名：</strong>${record["姓名"]}</p>
           <p><strong>学号：</strong>${record["学号"]}</p>
           <p><strong>所在学院：</strong>${record["所在学院"]}</p>
           <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
-          <p><strong>参与活动：</strong></p>
-          <pre style="white-space: pre-wrap;">${ activities || "无").split("；").join("\n")}</pre>
+          <p><strong>参与活动：</strong>${record["参与活动"] || "无"}</p>
         `;
         resultDiv.style.display = "block";
         notFoundDiv.style.display = "none";
@@ -139,4 +119,3 @@
   </script>
 </body>
 </html>
-
