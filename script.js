@@ -1,43 +1,64 @@
+<script>
+  let data;
 
-let data = [];
+  // 加载 JSON 数据
+  fetch('data.json')
+    .then(response => response.json())
+    .then(json => {
+      data = json;
+    });
 
-fetch("activity_data.json")
-    .then(res => res.json())
-    .then(json => data = json);
+  function search() {
+    const input = document.getElementById('searchInput').value.trim();
+    const resultDiv = document.getElementById('result');
+    const notFoundDiv = document.getElementById('notFound');
 
-
-function search() {
-    const keyword = document.getElementById("query").value.trim();
-    const resultDiv = document.getElementById("result");
     resultDiv.innerHTML = "";
+    resultDiv.style.display = "none";
+    notFoundDiv.style.display = "none";
 
-    if (!keyword) {
-        resultDiv.innerHTML = "<p>请输入姓名或学号</p>";
-        return;
-    }
+    if (!input || !data) return;
 
-    const record = data.find(item => item["姓名"] === keyword || item["学号"].toString() === keyword);
-    if (!record) {
-        resultDiv.innerHTML = "<p>未找到相关记录</p>";
-        return;
-    }
+    const record = data.find(
+      item => item["学号"] === input || item["姓名"] === input
+    );
 
-    let html = `<h3>${record["姓名"]} (${record["学号"]})</h3>`;
-    html += `<p>所在学院：${record["所在学院"]}</p>`;
-    html += `<p><strong>已完成学时：</strong> ${record["已完成学时"]}</p>`;
-    html += "<h4>参与活动：</h4><ul>";
+    if (record) {
+      // 基本信息部分
+      let html = `
+        <p><strong>姓名：</strong>${record["姓名"]}</p>
+        <p><strong>学号：</strong>${record["学号"]}</p>
+        <p><strong>所在学院：</strong>${record["所在学院"]}</p>
+        <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
+        <p><strong>参与活动：</strong></p>
+        <ul>
+      `;
 
-    for (let key in record) {
-        if (key !== "姓名" && key !== "学号" && key !== "所在学院" && key !== "已完成学时") {
-            const hours = Number(record[key]);
-            const val = String(record[key]).trim();
-            if (val && !isNaN(Number(val)) && Number(val) > 0) {
-                html += `<li class="activity">${key}：${val} 学时</li>`;
-                }
+      // 动态活动列表生成
+      let hasActivity = false;
+      for (let key in record) {
+        if (!["姓名", "学号", "所在学院", "已完成学时"].includes(key)) {
+          const raw = String(record[key]).replace(/[^\d.]/g, "").trim();
+          const hours = parseFloat(raw);
+          if (!isNaN(hours) && hours > 0) {
+            html += `<li>${key}：${hours} 学时</li>`;
+            hasActivity = true;
+          }
         }
+      }
+
+      if (!hasActivity) {
+        html += `<li>无</li>`;
+      }
+
+      html += "</ul>";
+
+      resultDiv.innerHTML = html;
+      resultDiv.style.display = "block";
+      notFoundDiv.style.display = "none";
+    } else {
+      resultDiv.style.display = "none";
+      notFoundDiv.style.display = "block";
     }
-
-    html += "</ul>";
-    resultDiv.innerHTML = html;
-}
-
+  }
+</script>
