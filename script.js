@@ -5,6 +5,7 @@ fetch("activity_data.json")
     .then(res => res.json())
     .then(json => data = json);
 
+
 function search() {
     const keyword = document.getElementById("query").value.trim();
     const resultDiv = document.getElementById("result");
