@@ -1,23 +1,122 @@
-
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>党骨班学时查询系统</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-        input { padding: 10px; font-size: 16px; width: 300px; margin-right: 10px; }
-        button { padding: 10px 15px; font-size: 16px; }
-        .result { margin-top: 20px; background: white; padding: 20px; border-radius: 10px; }
-        .activity { margin-bottom: 10px; }
-    </style>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>学时查询系统</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 1.2rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #2563eb;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      background-color: #f9fafb;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .result p {
+      margin: 0.4rem 0;
+      color: #333;
+    }
+
+    .not-found {
+      color: #dc2626;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
-    <h1>党骨班学时查询系统</h1>
-    <input type="text" id="query" placeholder="请输入姓名或学号">
+  <div class="container">
+    <h1>学时查询</h1>
+    <input type="text" id="searchInput" placeholder="请输入学号或姓名" />
     <button onclick="search()">查询</button>
-    <div class="result" id="result"></div>
-    <script src="script.js"></script>
+    <div class="result" id="result" style="display: none;"></div>
+    <div class="not-found" id="notFound" style="display: none;">未找到相关信息</div>
+  </div>
+
+  <script>
+    let data;
+
+    // 预加载 data.json
+    fetch('data.json')
+      .then(response => response.json())
+      .then(json => {
+        data = json;
+      });
+
+    function search() {
+      const input = document.getElementById('searchInput').value.trim();
+      const resultDiv = document.getElementById('result');
+      const notFoundDiv = document.getElementById('notFound');
+
+      if (!input || !data) return;
+
+      const record = data.find(
+        item => item["学号"] === input || item["姓名"] === input
+      );
+
+      if (record) {
+        resultDiv.innerHTML = `
+          <p><strong>姓名：</strong>${record["姓名"]}</p>
+          <p><strong>学号：</strong>${record["学号"]}</p>
+          <p><strong>所在学院：</strong>${record["所在学院"]}</p>
+          <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
+          <p><strong>参与活动：</strong>${record["参与活动"] || "无"}</p>
+        `;
+        resultDiv.style.display = "block";
+        notFoundDiv.style.display = "none";
+      } else {
+        resultDiv.style.display = "none";
+        notFoundDiv.style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
+
