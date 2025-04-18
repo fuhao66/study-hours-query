@@ -30,9 +30,10 @@ function search() {
     for (let key in record) {
         if (key !== "姓名" && key !== "学号" && key !== "所在学院" && key !== "已完成学时") {
             const hours = Number(record[key]);
-            if (!isNaN(hours) && hours > 0) {
-                html += `<li class="activity">${key}：${hours} 学时</li>`;
-            }
+            const val = String(record[key]).trim();
+            if (val && !isNaN(Number(val)) && Number(val) > 0) {
+                html += `<li class="activity">${key}：${val} 学时</li>`;
+                }
         }
     }
 
