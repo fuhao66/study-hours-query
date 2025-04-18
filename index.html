@@ -102,14 +102,24 @@
       );
 
       if (record) {
+        // resultDiv.innerHTML = `
+        //   <p><strong>姓名：</strong>${record["姓名"]}</p>
+        //   <p><strong>学号：</strong>${record["学号"]}</p>
+        //   <p><strong>所在学院：</strong>${record["所在学院"]}</p>
+        //   <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
+        //   // <p><strong>参与活动：</strong>${record["参与活动"] || "无"}</p>
+        //   <p><strong>参与活动：</strong></p>
+        //   <pre style="white-space: pre-wrap;">${(record["参与活动"] || "无").split("；").join("\n")}</pre>
+        // `;
         resultDiv.innerHTML = `
-          <p><strong>姓名：</strong>${record["姓名"]}</p>
-          <p><strong>学号：</strong>${record["学号"]}</p>
-          <p><strong>所在学院：</strong>${record["所在学院"]}</p>
-          <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
-          // <p><strong>参与活动：</strong>${record["参与活动"] || "无"}</p>
-          <p><strong>参与活动：</strong></p>
-          <pre style="white-space: pre-wrap;">${(record["参与活动"] || "无").split("；").join("\n")}</pre>
+        <p><strong>姓名：</strong>${record["姓名"]}</p>
+        <p><strong>学号：</strong>${record["学号"]}</p>
+        <p><strong>所在学院：</strong>${record["所在学院"]}</p>
+        <p><strong>已完成学时：</strong>${record["已完成学时"]}</p>
+        <p><strong>参与活动：</strong></p>
+        <ul>
+        ${(record["参与活动"] || "无").split("；").map(act => `<li>${act}</li>`).join("")}
+        </ul>
         `;
         resultDiv.style.display = "block";
         notFoundDiv.style.display = "none";
