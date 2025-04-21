@@ -96,11 +96,12 @@ button:hover {
     let data;
 
     // 预加载 data.json
-    fetch('activity_data.json')
-      .then(response => response.json())
-      .then(json => {
-        data = json;
-      });
+    fetch('activity_data.json?v=' + Date.now())  // 加个时间戳，每次都重新请求
+  .then(response => response.json())
+  .then(json => {
+    data = json;
+  });
+
 
  function search() {
   const input = document.getElementById('searchInput').value.trim();
